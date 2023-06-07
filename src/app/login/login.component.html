@@ -1,0 +1,8 @@
+<div class="container">
+  <form class="login-form">
+    <h2>Iniciar sesión</h2>
+    <input type="text" placeholder="Usuario" [(ngModel)]="user.email" name="email">
+    <input type="password" [(ngModel)]="user.password" name="password" name="email" placeholder="Contraseña">
+    <button type="submit" (click)="login()">Iniciar sesión</button>
+  </form>
+</div>
