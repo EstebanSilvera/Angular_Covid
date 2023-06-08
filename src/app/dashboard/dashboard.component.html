@@ -1,49 +1,42 @@
 <nav class="navbar">
   <div class="sidebar">
-    <ul>
-      <li><a routerLink="/">Inicio</a></li>
-      <li><a routerLink="/productos">Productos</a></li>
-      <li><a routerLink="/servicios">Servicios</a></li>
-      <li><a routerLink="/contacto">Contacto</a></li>
-    </ul>
+    <p routerLink="/dashboard">home</p>
+    <p>Products</p>
+    <p>Contact</p>
+    <p (click)="Cerrar()"> Sign off</p>
   </div>
 
   <div style="width: 80vw; margin-left: 30px;">
+    
     <h1>Report of covid-19 in the world</h1>
+
+    <input class="archivo" type="file" (change)="leerArchivo($event)" /> <hr/>
 
     <table class="table">
       <thead>
         <tr>
-          <th>Nombre</th>
-          <th>Apellido</th>
-          <th>Edad</th>
+          <th>Country</th>
+          <th>Numeros total de fallecidos</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>John</td>
           <td>Doe</td>
-          <td>25</td>
         </tr>
         <tr>
           <td>Jane</td>
           <td>Smith</td>
-          <td>30</td>
         </tr>
         <tr>
           <td>Bob</td>
           <td>Johnson</td>
-          <td>40</td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  
+
 
 
 </nav>
-
-
-
-
