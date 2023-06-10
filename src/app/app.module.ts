@@ -7,6 +7,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
+import { GoogleChartsModule } from 'angular-google-charts';
+
+
 @NgModule({
   declarations: [		
     AppComponent,
