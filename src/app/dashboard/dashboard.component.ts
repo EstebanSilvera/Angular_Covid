@@ -46,6 +46,8 @@ export class DashboardComponent implements OnInit {
 
       let ulticountry: String = dataSummary[1][6]
 
+      console.log(ulticountry)
+
       dataSummary.forEach(element => {
 
         if (element[6] === ulticountry) {
@@ -58,6 +60,7 @@ export class DashboardComponent implements OnInit {
           ultiDay.push(sum)
           populationState.push(sumPopulation)
 
+          sumPopulation = 0
           sum = 0
         }
 
@@ -65,17 +68,16 @@ export class DashboardComponent implements OnInit {
           country.push(element[6])
         }
 
-        population += parseInt(element[13])
-
         ulticountry = country[country.length - 1]
 
       })
       ultiDay.push(sum)
+      populationState.push(sumPopulation)
 
       const max = Math.max(...ultiDay)
       const maxIndex = ultiDay.indexOf(max);
 
-      maxState.push(country[maxIndex], String(max)) 
+      maxState.push(country[maxIndex], String(max))
 
       localStorage.setItem("max", JSON.stringify(maxState))
 
@@ -88,6 +90,8 @@ export class DashboardComponent implements OnInit {
         localStorage.setItem("information", JSON.stringify(combinedArray))
       }
 
+      console.log(dataSummary)
+
       let oldInf = 0
 
       // country whith 0 death
@@ -96,16 +100,16 @@ export class DashboardComponent implements OnInit {
         (element.property2 == 0) ? countryMin.push(element.property1) : console.log()
 
         let old = (element.property2 / element.property3) * 100
-        if(element.property2 != 0){
+        if (element.property2 != 0) {
 
           if (old > oldInf) {
-            
-            affectedState.push([element.property1,element.property2, element.property3])
+
+            affectedState.push([element.property1, element.property2, element.property3])
 
             localStorage.setItem("affected", JSON.stringify(affectedState))
-            
+
             oldInf = old
-          } 
+          }
         }
         sumDeath += parseInt(element.property2)
 
@@ -114,9 +118,6 @@ export class DashboardComponent implements OnInit {
 
       console.log(sumDeath)
 
-      localStorage.setItem("grafic", JSON.stringify([population, sumDeath]))
-
-
     };
 
     lector.readAsText(file);
@@ -124,19 +125,19 @@ export class DashboardComponent implements OnInit {
   }
 
   Grafic() {
-    const data:any = []
-    const name:any = []
-    JSON.parse(localStorage.getItem("information")!).forEach((element:any) => {
-      if(element.property2 != 0){
-        data.push(element.property3 / element.property2)*100
+    const data: any = []
+    const name: any = []
+    JSON.parse(localStorage.getItem("information")!).forEach((element: any) => {
+      if (element.property2 != 0) {
+        data.push(element.property3 / element.property2) * 100
         name.push(element.property1);
-      }else{
-        data.push(element.property2) 
+      } else {
+        data.push(element.property2)
         name.push(element.property1);
       }
     });
 
-    const promedio = data.reduce((a:any, b:any) => a + b, 0) / data.length;
+    const promedio = data.reduce((a: any, b: any) => a + b, 0) / data.length;
 
     const canvas = document.getElementById('myChart');
     const ctx = (canvas as HTMLCanvasElement).getContext('2d')!;
@@ -155,13 +156,29 @@ export class DashboardComponent implements OnInit {
         plugins: {
           title: {
             display: true,
-            text: `Promedio: ${promedio.toFixed(2)}`
+            text: `Circle Graph`
           }
         }
       }
     });
   }
 
+  PressGrafic() {
+    console.log("presion")
+    const content = document.getElementById('contentGrafic');
+    content!.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  PressTable() {
+    console.log("presion")
+    const content = document.getElementById('table');
+    content!.scrollIntoView({ behavior: 'smooth' });
+  }
+  Home() {
+    console.log("presion")
+    const content = document.getElementById('home');
+    content!.scrollIntoView({ behavior: 'smooth' });
+  }
 
   affect = JSON.parse(localStorage.getItem("affected")!) || affectedState
 
@@ -172,13 +189,17 @@ export class DashboardComponent implements OnInit {
   dataSource = JSON.parse(localStorage.getItem("information")!) || combinedArray
 
   Cerrar() {
-    localStorage.removeItem("key")
-    localStorage.removeItem("information")
-    localStorage.removeItem("min")
-    localStorage.removeItem("max")
-    localStorage.removeItem("grafic")
-    localStorage.removeItem("affected")
-    window.location.href = "/"
+
+    const result = confirm("¿esta seguro que desea salir de la aplicacion?")
+
+    if (result) {
+      localStorage.removeItem("key")
+      localStorage.removeItem("information")
+      localStorage.removeItem("min")
+      localStorage.removeItem("max")
+      localStorage.removeItem("affected")
+      window.location.href = "/"
+    }
   }
 
 

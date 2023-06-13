@@ -1,33 +1,19 @@
 <nav class="navbar">
   <div class="sidebar">
-    <p routerLink="/dashboard">home</p>
-    <p>Products</p>
-    <p>Contact</p>
+    <p (click)="Home()">home</p>
+    <p (click)="PressGrafic()">Grafic</p>
+    <p (click)="PressTable()">Table</p>
     <p (click)="Cerrar()"> Sign off</p>
   </div>
 
-  <div style="width: 80vw; margin-left: 30px;">
+  <div id="home" style="width: 100vw; margin-left: 11vh; padding: 15px; box-shadow: 0px 0px 5px 2px black; background-color: #D5D8DC;">
 
-    <h1>Report of covid-19 in the world</h1>
+    <div style="margin-bottom: 40px;">
+      <h1>Report of covid-19 in the world</h1>
 
-    <input class="archivo" type="file" (change)="leerArchivo($event)" />
+      <input class="archivo" type="file" (change)="leerArchivo($event)" />
+    </div>
     <hr />
-
-    <!-- <table class="table">
-      <thead>
-        <tr>
-          <th>Country</th>
-          <th>number of deaths</th>
-        </tr>
-      </thead>
-      
-      <tbody *ngFor="let personal of dataSource" >
-        <tr>
-          <td>{{personal.property1}}</td>
-          <td>{{personal.property2}}</td>
-        </tr>
-      </tbody>
-    </table> -->
 
     <h1>State with highest accumulated to date</h1>
     <div *ngIf="stateMax != false">
@@ -45,17 +31,45 @@
     <h1>State more affect</h1>
     <div *ngIf="stateMin != false" class="cuadro">
       <h1>{{affect[0][0]}}</h1>
-      <h3>Because it is the state that has had the most deaths taking into account the amount of population, giving a higher range of {{affect[0][1]}} deaths and its population is {{affect[0][2]}}</h3>
+      <h3>Because it is the state that has had the most deaths taking into account the amount of population, giving a
+        higher range of <strong
+          style="background-color: red; border-radius: 10px; padding: 3px;">{{affect[0][1]}}</strong> deaths and its
+        population is <strong
+          style="background-color: blue;border-radius: 10px; padding: 3px;">{{affect[0][2]}}</strong> </h3>
     </div>
     <hr>
 
-    <h1>the percentage of total deaths vs. total population by state. <button (click)="Grafic()">see grafic</button></h1>
+    <div id="contentGrafic">
+      <h1>the percentage of total deaths vs. total population by state. <button (click)="Grafic()">see grafic</button>
+      </h1>
 
-    <div>
-      <canvas  id="myChart"></canvas>
+      <canvas id="myChart"></canvas>
     </div>
-    
 
+    <hr>
+
+    <div id="table">
+
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Country</th>
+          <th>number of deaths</th>
+          <th>number total population</th>
+        </tr>
+      </thead>
+      
+      <tbody *ngFor="let personal of dataSource">
+        <tr>
+          <td>{{personal.property1}}</td>
+          <td>{{personal.property2}}</td>
+          <td>{{personal.property3}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+    
+    
   </div>
 
 

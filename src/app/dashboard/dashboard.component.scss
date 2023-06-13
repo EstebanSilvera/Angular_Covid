@@ -6,13 +6,20 @@
   box-shadow: 0px 0px 5px 2px black;
   width: 10vh;
   padding-bottom: 20vh;
-  padding-top: 15vh;
+  padding-top: 20vh;
+  text-align: center;
+  position: fixed;
+  margin-top: 4vh;
+  background-color:  #85C1E9;
 
   p {
     cursor: pointer;
-    background-color: red;
+    background-color: brown;
     margin-bottom: 10vh;
-    height: 3vh;
+    height: 2.5vh;
+  }
+  p:hover{
+    background-color: red;
   }
 
   p:nth-of-type(-n+3) {
