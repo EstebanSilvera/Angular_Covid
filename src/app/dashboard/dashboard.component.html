@@ -31,11 +31,11 @@
 
     <h1>State with highest accumulated to date</h1>
     <div *ngIf="stateMax != false">
-      <p>El estado con mas muertos es {{stateMax[0]}} con {{stateMax[1]}} muertos</p>
+      <p>The state with the most deaths is {{stateMax[0]}} with {{stateMax[1]}} deaths</p>
     </div>
 
     <h1>State with the lowest accumulated to date.</h1>
-    <p *ngIf="stateMin != false">los estados que tuvieron 0 son:</p>
+    <p *ngIf="stateMin != false">States that had 0 deaths:</p>
     <div *ngFor="let min of stateMin">
       <ul>
         <li>{{min}}</li>
@@ -44,15 +44,17 @@
 
     <h1>State more affect</h1>
     <div *ngIf="stateMin != false" class="cuadro">
-      <h1>{{stateMax[0]}}</h1>
-      <h3>Because it is the state that has had the most deaths taking into account the difference of the other states,
-        giving a higher range of {{stateMax[1]}} deaths</h3>
+      <h1>{{affect[0][0]}}</h1>
+      <h3>Because it is the state that has had the most deaths taking into account the amount of population, giving a higher range of {{affect[0][1]}} deaths and its population is {{affect[0][2]}}</h3>
     </div>
     <hr>
 
-    <h1>the percentage of total deaths vs. total population by state. <button (click)="Grafic($event)">see grafic</button></h1>
+    <h1>the percentage of total deaths vs. total population by state. <button (click)="Grafic()">see grafic</button></h1>
 
-    <canvas id="myChart"></canvas>
+    <div>
+      <canvas  id="myChart"></canvas>
+    </div>
+    
 
   </div>
 

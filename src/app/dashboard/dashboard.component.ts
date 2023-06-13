@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js/auto'
 
+//variables 
+
 let ultiDay: any = []
 let country: any = []
+let populationState: any = []
 let countryMin: any = []
 let combinedArray: any = [];
 let maxState: any = []
+let affectedState: any = []
 let sum = 0
+let sumPopulation = 0
 let sumDeath = 0
 let population = 0
 
@@ -46,10 +51,12 @@ export class DashboardComponent implements OnInit {
         if (element[6] === ulticountry) {
 
           sum += parseInt(element[element.length - 2])
+          sumPopulation += parseInt(element[13])
 
         } else {
 
           ultiDay.push(sum)
+          populationState.push(sumPopulation)
 
           sum = 0
         }
@@ -68,35 +75,38 @@ export class DashboardComponent implements OnInit {
       const max = Math.max(...ultiDay)
       const maxIndex = ultiDay.indexOf(max);
 
-      maxState = JSON.stringify([country[maxIndex], String(max)])
+      maxState.push(country[maxIndex], String(max)) 
 
-      localStorage.setItem("max", maxState)
-
-      console.log(JSON.parse(maxState))
-
-      console.log(countryMin)
-
-      console.log(max)
-
-      console.log(dataSummary)
-
-      console.log(ultiDay)
-
-      console.log(country)
+      localStorage.setItem("max", JSON.stringify(maxState))
 
       for (let i = 0; i < country.length; i++) {
         combinedArray.push({
           property1: country[i],
-          property2: ultiDay[i]
+          property2: ultiDay[i],
+          property3: populationState[i],
         });
         localStorage.setItem("information", JSON.stringify(combinedArray))
       }
+
+      let oldInf = 0
 
       // country whith 0 death
       JSON.parse(localStorage.getItem("information")!).forEach((element: any) => {
 
         (element.property2 == 0) ? countryMin.push(element.property1) : console.log()
 
+        let old = (element.property2 / element.property3) * 100
+        if(element.property2 != 0){
+
+          if (old > oldInf) {
+            
+            affectedState.push([element.property1,element.property2, element.property3])
+
+            localStorage.setItem("affected", JSON.stringify(affectedState))
+            
+            oldInf = old
+          } 
+        }
         sumDeath += parseInt(element.property2)
 
         localStorage.setItem("min", JSON.stringify(countryMin))
@@ -104,8 +114,8 @@ export class DashboardComponent implements OnInit {
 
       console.log(sumDeath)
 
-      localStorage.setItem("grafic", JSON.stringify([population,sumDeath]))
-      
+      localStorage.setItem("grafic", JSON.stringify([population, sumDeath]))
+
 
     };
 
@@ -113,12 +123,20 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  Grafic(event: any){
+  Grafic() {
+    const data:any = []
+    const name:any = []
+    JSON.parse(localStorage.getItem("information")!).forEach((element:any) => {
+      if(element.property2 != 0){
+        data.push(element.property3 / element.property2)*100
+        name.push(element.property1);
+      }else{
+        data.push(element.property2) 
+        name.push(element.property1);
+      }
+    });
 
-    const info = JSON.parse(localStorage.getItem("grafic")!)
-
-    const data = [info[0], info[1]];
-    const promedio = data.reduce((a, b) => a + b, 0) / data.length;
+    const promedio = data.reduce((a:any, b:any) => a + b, 0) / data.length;
 
     const canvas = document.getElementById('myChart');
     const ctx = (canvas as HTMLCanvasElement).getContext('2d')!;
@@ -126,10 +144,10 @@ export class DashboardComponent implements OnInit {
     new Chart(ctx, {
       type: 'pie',
       data: {
-        labels: ['Valor 1', 'Valor 2'],
+        labels: [...name],
         datasets: [{
           data: data,
-          backgroundColor: ['#FF6384', '#36A2EB'],
+          backgroundColor: ['#FF6384', '#36A2EB', '#E67E22', '#BB8FCE', '#C0392B'],
           borderWidth: 1
         }]
       },
@@ -144,6 +162,9 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+
+  affect = JSON.parse(localStorage.getItem("affected")!) || affectedState
+
   stateMin = JSON.parse(localStorage.getItem("min")!) || countryMin
 
   stateMax = JSON.parse(localStorage.getItem("max")!) || maxState
@@ -156,6 +177,7 @@ export class DashboardComponent implements OnInit {
     localStorage.removeItem("min")
     localStorage.removeItem("max")
     localStorage.removeItem("grafic")
+    localStorage.removeItem("affected")
     window.location.href = "/"
   }
 
